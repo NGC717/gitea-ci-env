@@ -11,6 +11,22 @@ RUN apt-get update && \
         libxi6 && \
     rm -rf /var/lib/apt/lists/*
 
+RUN SHA1=$(curl -s http://d.defold.com/stable/info.json | jq -r '.sha1') && \
+echo "Using SHA1: ${SHA1}" && \
+export SHA1=${SHA1}
+
+ENV SHA1=$SHA1
+ENV PLATFORM=linux/x86_64
+
+RUN DMENGINE_URL="http://d.defold.com/archive/${SHA1}/engine/${PLATFORM}/dmengine_headless" && \
+    echo "Downloading dmengine_headless from ${DMENGINE_URL}" && \
+    curl -L -o dmengine_headless ${DMENGINE_URL} && \
+    chmod +x dmengine_headless
+
+RUN BOB_URL="http://d.defold.com/archive/${SHA1}/bob/bob.jar" && \
+    echo "Downloading bob.jar from ${BOB_URL}" && \
+    curl -L -o bob.jar ${BOB_URL}
+
 RUN git --version && \
     gcc --version && \
     g++ --version && \
