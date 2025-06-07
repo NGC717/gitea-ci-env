@@ -1,0 +1,21 @@
+FROM docker.io/eclipse-temurin:21-jre
+
+WORKDIR /workspace
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        git \
+        curl \
+        bash \
+        build-essential \
+        libxi6 && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN git --version && \
+    gcc --version && \
+    g++ --version && \
+    make --version && \
+    curl --version && \
+    bash --version
+
+CMD ["bash"]
