@@ -1,4 +1,4 @@
-FROM docker.io/eclipse-temurin:21-jre
+FROM swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/eclipse-temurin:21-jre
 
 WORKDIR /workspace
 
@@ -12,19 +12,15 @@ RUN apt-get update && \
         libxi6 && \
     rm -rf /var/lib/apt/lists/*
 
-ARG SHA1=$(curl -s http://d.defold.com/stable/info.json | jq -r '.sha1')
-
-ENV SHA1=${SHA1}
-ENV PLATFORM=linux/x86_64
-
-RUN DMENGINE_URL="http://d.defold.com/archive/${SHA1}/engine/${PLATFORM}/dmengine_headless" && \
+RUN SHA1=$(curl -s http://d.defold.com/stable/info.json | jq -r '.sha1') && \
+    PLATFORM="linux/x86_64" && \
+    DMENGINE_URL="http://d.defold.com/archive/${SHA1}/engine/${PLATFORM}/dmengine_headless" && \
     echo "Downloading dmengine_headless from ${DMENGINE_URL}" && \
-    curl -L -o dmengine_headless ${DMENGINE_URL} && \
-    chmod +x dmengine_headless
-
-RUN BOB_URL="http://d.defold.com/archive/${SHA1}/bob/bob.jar" && \
+    curl -L -o dmengine_headless "${DMENGINE_URL}" && \
+    chmod +x dmengine_headless && \
+    BOB_URL="http://d.defold.com/archive/${SHA1}/bob/bob.jar" && \
     echo "Downloading bob.jar from ${BOB_URL}" && \
-    curl -L -o bob.jar ${BOB_URL}
+    curl -L -o bob.jar "${BOB_URL}"
 
 RUN git --version && \
     gcc --version && \
@@ -33,5 +29,5 @@ RUN git --version && \
     curl --version && \
     bash --version && \
     java -jar bob.jar --version
-    
+
 CMD ["bash"]
