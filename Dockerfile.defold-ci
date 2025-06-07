@@ -12,11 +12,9 @@ RUN apt-get update && \
         libxi6 && \
     rm -rf /var/lib/apt/lists/*
 
-RUN SHA1=$(curl -s http://d.defold.com/stable/info.json | jq -r '.sha1') && \
-echo "Using SHA1: ${SHA1}" && \
-export SHA1=${SHA1}
+ARG SHA1=$(curl -s http://d.defold.com/stable/info.json | jq -r '.sha1')
 
-ENV SHA1=$SHA1
+ENV SHA1=${SHA1}
 ENV PLATFORM=linux/x86_64
 
 RUN DMENGINE_URL="http://d.defold.com/archive/${SHA1}/engine/${PLATFORM}/dmengine_headless" && \
