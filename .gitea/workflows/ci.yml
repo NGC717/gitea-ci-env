@@ -1,0 +1,33 @@
+name: CI Build-Test-Lint
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-test-lint:
+    runs-on: ci
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Bob CLI (Defold Builder)
+        run: npm install -g bob
+
+      - name: Install Luacheck (Static Analyzer)
+        run: sudo apt update && sudo apt install -y lua-luacheck
+
+      - name: Run Luacheck (Static Code Analysis)
+        run: luacheck src/ test/
+
+      - name: Build Game
+        run: bob build
+
+      - name: Run Unit Tests
+        run: bob test
