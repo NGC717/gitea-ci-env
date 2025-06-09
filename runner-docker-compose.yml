@@ -1,21 +1,13 @@
-version: "3.8"
-
-networks:
-  gitea_default:
-    external: true
-
 services:
   runner:
     image: docker.io/gitea/act_runner:nightly
     environment:
       CONFIG_FILE: /config.yaml
-      GITEA_INSTANCE_URL: http://gitea:3000
-      GITEA_RUNNER_REGISTRATION_TOKEN: E8fqkPk9uJLQ2nt2G1dtLGQ8aBejiqiSgBZ58jOl
+      GITEA_INSTANCE_URL: http://host.docker.internal:3000
+      GITEA_RUNNER_REGISTRATION_TOKEN: 0ODy0xQ1m4sStxI7JENaqP9GazMOCkKBqPV0R456
       GITEA_RUNNER_NAME: ci-runner
       GITEA_RUNNER_LABELS: self-hosted,ci
     volumes:
       - ./config.yaml:/config.yaml
       - ./data:/data
       - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - gitea_default
