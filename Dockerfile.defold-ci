@@ -1,4 +1,4 @@
-FROM docker.io/eclipse-temurin:21-jre
+FROM eclipse-temurin:21.0.7_6-jre-jammy
 
 WORKDIR /workspace
 
@@ -21,13 +21,5 @@ RUN SHA1=$(curl -s http://d.defold.com/stable/info.json | jq -r '.sha1') && \
     BOB_URL="http://d.defold.com/archive/${SHA1}/bob/bob.jar" && \
     echo "Downloading bob.jar from ${BOB_URL}" && \
     curl -L -o bob.jar "${BOB_URL}"
-
-RUN git --version && \
-    gcc --version && \
-    g++ --version && \
-    make --version && \
-    curl --version && \
-    bash --version && \
-    java -jar bob.jar --version
 
 CMD ["bash"]
