@@ -1,4 +1,4 @@
-name: CI Build-Test-Lint
+name: CI Build-Test-LuaCov
 
 on:
   push:
@@ -7,27 +7,21 @@ on:
 
 jobs:
   build-test-lint:
-    runs-on: ci
+    runs-on: ci-runner
+    image: ngc717/defold-ci-env:latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
+      - name: Build game
+        run : |
+          echo "running bob.jar"
+          java -jar bob.jar --debug build
 
-      - name: Install Bob CLI (Defold Builder)
-        run: npm install -g bob
+      - name: Start dmengine
+        run : |
+          echo "Starting dmengine_headless"
+          ./dmengine_headless
 
-      - name: Install Luacheck (Static Analyzer)
-        run: sudo apt update && sudo apt install -y lua-luacheck
-
-      - name: Run Luacheck (Static Code Analysis)
-        run: luacheck src/ test/
-
-      - name: Build Game
-        run: bob build
-
-      - name: Run Unit Tests
-        run: bob test
+      - name: Upload TestCov
+        uses: codecov/codecov-action@v3
