@@ -13,7 +13,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 RUN SHA1=$(curl -s http://d.defold.com/stable/info.json | jq -r '.sha1') && \
-    PLATFORM="linux/x86_64" && \
+    PLATFORM="x86_64-linux" && \
     DMENGINE_URL="http://d.defold.com/archive/${SHA1}/engine/${PLATFORM}/dmengine_headless" && \
     echo "Downloading dmengine_headless from ${DMENGINE_URL}" && \
     curl -L -o dmengine_headless "${DMENGINE_URL}" && \
