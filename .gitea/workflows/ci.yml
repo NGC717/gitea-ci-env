@@ -10,6 +10,8 @@ jobs:
     runs-on: ci-runner
     image: ngc717/defold-ci-env:latest
     steps:
+      - name: Setup node.js
+        
       - name: Checkout code
         uses: actions/checkout@v4
 
